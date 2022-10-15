@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    my photos
+{% endblock %}
+{% block style %}
+    <style>
+        #uploads {text-align:center; padding: 5px;}
+        .container {display: flex; flex-wrap: wrap; justify-content: center;}
+        .container > div {padding: 10px;}
+        #submit:hover {color: green; font-weight: bold;}        
+    </style>    
+{% endblock %}
+
+
+{% block body %}
+    <div class="row" id="banner">
+        <div class="col-lg-4 col-sm-12" id="left_banner">
+            <h4><a href="/">Home</a></h4>            
+        </div>
+        <div class="col-lg-4 col-sm-12">
+            <h1 id="heading">My Photo App</h1>
+            <h5 id="user_name">{{ username}}</h5>
+        </div>
+        <div class="col-lg-4 col-sm-12" id="right_banner">
+            <h4><a href="/logout">Logout</a></h4>
+        </div>
+    </div>
+    <div class="row" id="uploads">
+        <div class="col-lg-6 col-sm-12">
+            <h4>Upload Photo</h4><br>
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('home') }}">
+                {{ form.csrf_token }}
+                <div>
+                    {{ form.photo() }}
+                </div><br>
+                <input name="person" type="radio" value="self"> Self
+                <input name="person" type="radio" value="family"> Family
+                <input name="person" type="radio" value="friends"> Friends
+                <input name="person" type="radio" value="colleagues"> Colleagues
+                <input name="person" type="radio" value="others"> Others
+                <br><br>
+                <input name="message" type="text" placeholder="message">
+                <br><br>
+                <input type="submit" value="Upload" id="submit">
+            </form>
+            {% if error_message %}
+            <div id="error_message">
+                {{ error_message }}
+            </div>
+            {% endif %}
+        </div>
+        {% if url %}
+        <div class="col-lg-6 col-sm-12">           
+            <h3>Uploaded!</h3>
+            <img src="{{url}}" width="300px">
+        </div>
+        {% endif %}
+    </div>
+    {% if photos %}
+    <hr/>
+    <h4 style="text-align: center;">My Photos</h4>
+    <div class="container">
+        {% for key, value in photos.items() %}
+        <div style="text-align: center;">
+            <a href="{{ value }}" target="_blank"><img width="150" src="{{value}}"></a><br>
+            <a href="{{ url_for('view_image', key=key) }}">View</a>&nbsp;&nbsp;<a href="{{ url_for('delete_image', key=key) }}" id="delete">Delete</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+{% endblock %}

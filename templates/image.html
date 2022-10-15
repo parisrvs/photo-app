@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+        image
+{% endblock %}
+{% block style %}
+    <style>        
+        @media (max-width: 499px) {img {width:100%;} #image {text-align:center; padding:30px;}}
+        @media (min-width: 500px) {img {width:500px;} #image {text-align:center;}}
+        @media print {.dontprint {display: none;} img {width:100%}}
+        #image_info {text-align: center; padding: 10px; }        
+        #paragraph {margin: 20px; word-wrap:break-word;}
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row" id="banner">
+        <div class="col-lg-4 col-sm-12" id="left_banner">
+            <h4 class="dontprint"><a href="/">Home</a></h4>            
+        </div>
+        <div class="col-lg-4 col-sm-12">
+            <h1 id="heading" class="dontprint">My Photo App</h1>
+            <h5 class="dontprint" id="user_name">{{ username}}</h5>
+        </div>
+        <div class="col-lg-4 col-sm-12" id="right_banner">
+            <h4 class="dontprint"><a href="/logout">Logout</a></h4>
+        </div>
+    </div>    
+    <div class="row">
+        <div class="col-lg-8 col-sm-12" id="image">
+            <img src="{{ url }}">
+        </div>
+        <div class="col-lg-4 col-sm-12" id="image_info">
+            <div class="dontprint">                
+                <p>Info: {{ info[0] }}</p>
+                <p id="paragraph">Message: {{ info[1] }}</p>
+                <p>
+                    Time:
+                    {% for key, value in info[2].items() %}
+                        {{ value }}
+                    {% endfor %}        
+                </p>
+                <button onclick="myFunction()"><b style="color: green;">Print this picture</b></button>
+                <br><br>
+                <p><a href="{{ url_for('delete_image', key=key) }}" id="delete">Delete this image</a></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function myFunction() {window.print();}
+    </script>    
+{% endblock %}

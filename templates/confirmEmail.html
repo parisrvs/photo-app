@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Confirm Email
+{% endblock %}
+{% block style %}
+    <style>
+        h3 {text-align: center;padding: 20px;}
+        #login_form {text-align: center; padding: 20px;}
+    </style>    
+{% endblock %}
+
+
+{% block body %}
+    <div class="row" id="banner">
+        <div class="col-lg-4 col-sm-12" id="left_banner">
+            <h4><a href="/forgotpassword">Forgot Password</a></h4>
+        </div>
+        <div class="col-lg-4 col-sm-12">
+            <h1 id="heading">My Photo App</h1>
+        </div>
+        <div class="col-lg-4 col-sm-12" id="right_banner">
+            <h4><a href="/register">Register</a></h4>
+        </div>
+    </div>
+    <h3>Confirm Account</h3>
+    <div id="login_form">
+        <form method="post" action="{{ url_for('confirmEmail') }}">
+            <p>Confirmation Code</p>
+            <input name="code" type="text" placeholder="Confirmation Code" autofocus><br><br>
+            <p>enter the confirmation code sent in your inbox/junk folder: {{ email }}</p>
+            <input type="submit" value="Confirm">
+        </form>
+        {% if error_message %}
+            <div id="error_message">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        <p><a href="/resend_confirmation_code">Resend Confirmation Code</a></p>
+        <p><a href="/logout">Cancel</a></p>
+    </div>
+{% endblock %}
